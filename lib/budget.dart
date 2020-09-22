@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testapp/budget_entry.dart';
 import 'package:testapp/datepicker.dart';
 
@@ -11,6 +14,19 @@ class _BudgetState extends State<Budget> {
   List items = [];
   int i = 0;
   Map date = {};
+  Future<String> _setData(Map map) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String counter = json.encode(map);
+    prefs.setString("date", counter);
+
+    return counter;
+  }
+
+  Future<String> _getData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String counter = (prefs.getString('date') ?? '${Map()}');
+    return counter;
+  }
 
   String subtitle(item) {
     String text;
@@ -21,6 +37,18 @@ class _BudgetState extends State<Budget> {
     }
 
     return text;
+  }
+
+  @override
+  void initState() {
+    _getData().then((value) {
+      this.date = json.decode(value);
+      this.items = this.date.keys.toList().reversed.toList();
+      this.i = int.parse(
+          this.items[0].toString()[this.items.last.toString().length - 1]);
+      setState(() {});
+    });
+    super.initState();
   }
 
   @override
@@ -94,6 +122,13 @@ class _BudgetState extends State<Budget> {
                         itemBuilder: (context, index) {
                           final item = items[index];
 
+                          date[item] = subtitle(item);
+//                          print(date);
+                          _setData(date).then((value) {
+                            // setState(() {});
+//                            print(value.runtimeType);
+                          });
+
                           return Dismissible(
                             // Each Dismissible must contain a Key. Keys allow Flutter to
                             // uniquely identify widgets.
@@ -103,13 +138,19 @@ class _BudgetState extends State<Budget> {
                             // what to do after an item has been swiped away.
                             onDismissed: (direction) {
                               // Remove the item from the data source.
-                              setState(
-                                () {
-                                  items.remove(items[index]);
-                                  print('$items');
+                              var temp = items[index];
+                              date.remove(temp);
+                              items.remove(temp);
+
+                              // print('hi ${items[index]}');
+//                              print('$date,\n $temp');
+
 //                        items.removeAt(index);
-                                },
-                              );
+
+                              _setData(date).then((value) {
+                                setState(() {});
+//                                print(value.runtimeType);
+                              });
 
                               // Then show a snackbar.
                             },
@@ -118,7 +159,7 @@ class _BudgetState extends State<Budget> {
                             child: Card(
                               child: ListTile(
                                 onTap: () async {
-                                  if (date[item] == null) {
+                                  if (date[item] == 'Select Date') {
                                     date[item] = await DatePicker()
                                         .callDatePicker(context);
 //                                    print(date[item].toString());
@@ -139,7 +180,7 @@ class _BudgetState extends State<Budget> {
                                 onLongPress: () async {
                                   date[item] = await DatePicker()
                                       .callDatePicker(context);
-                                  print(date[item].toString());
+//                                  print(date[item].toString());
                                   setState(() {});
                                 },
                                 subtitle: Text(subtitle(item)),
