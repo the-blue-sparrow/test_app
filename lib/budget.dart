@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testapp/budget_entry.dart';
 import 'package:testapp/datepicker.dart';
+//import 'nested_list.dart';
 
 class Budget extends StatefulWidget {
   @override
@@ -12,6 +13,7 @@ class Budget extends StatefulWidget {
 
 class _BudgetState extends State<Budget> {
   List items = [];
+  double total = 0.0;
   int i = 0;
   Map date = {};
   Future<String> _setData(Map map) async {
@@ -22,9 +24,17 @@ class _BudgetState extends State<Budget> {
     return counter;
   }
 
+  Future<String> getSumData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String counter = (prefs.getString('sum') ?? jsonEncode(Map()));
+    return counter;
+  }
+
+  Map budgetSum;
+
   Future<String> _getData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String counter = (prefs.getString('date') ?? '${Map()}');
+    String counter = (prefs.getString('date') ?? jsonEncode(Map()));
     return counter;
   }
 
@@ -44,15 +54,30 @@ class _BudgetState extends State<Budget> {
     _getData().then((value) {
       this.date = json.decode(value);
       this.items = this.date.keys.toList().reversed.toList();
-      this.i = int.parse(
-          this.items[0].toString()[this.items.last.toString().length - 1]);
+      if (this.items.length != 0) {
+        this.i = int.parse(
+            this.items[0].toString()[this.items.last.toString().length - 1]);
+      }
       setState(() {});
+    });
+    getSumData().then((value) {
+      this.budgetSum = jsonDecode(value);
+      this.budgetSum['individual sum'] =
+          this.budgetSum['individual sum'] ?? Map();
+//      print(' areeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee ${this.budgetSum}');
+      setState(() {});
+      for (String i in this.budgetSum['individual sum'].keys.toList) {
+        total = total + this.budgetSum['individual sum'][i];
+      }
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    for (String i in budgetSum['individual sum'].keys.toList()) {
+      total = total + budgetSum['individual sum'][i];
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0Xffb22020),
@@ -98,7 +123,7 @@ class _BudgetState extends State<Budget> {
                         width: 10,
                       ),
                       Text(
-                        '0.00',
+                        total.toString(),
                         style: TextStyle(
                           fontSize: 36,
                         ),
