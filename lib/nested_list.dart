@@ -1,9 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:testapp/model.dart';
 
 Future<String> setSumData(Map map) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -80,16 +78,11 @@ class _ListWidgetState extends State<ListWidget> {
           this.budgetData[widget.id][widget.cat]['entry'] ?? Map();
       this.inter_items =
           this.budgetData[widget.id][widget.cat]['entry'].keys.toList();
+
       if (this.inter_items.length != 0) {
         this.iter = int.parse(this
             .inter_items
             .last
-            .toString()[this.inter_items.last.toString().length - 1]);
-      }
-
-      if (this.inter_items.length != 0) {
-        this.iter = int.parse(this
-            .inter_items[0]
             .toString()[this.inter_items.last.toString().length - 1]);
       }
       print('${this.budgetData}');
@@ -180,9 +173,6 @@ class _ListWidgetState extends State<ListWidget> {
                             children: [
                               Expanded(
                                 child: TextFormField(
-                                  onTap: () {
-                                    setState(() {});
-                                  },
                                   initialValue: budgetData[widget.id]
                                       [widget.cat]['entry'][item]['title'],
                                   onChanged: (val) {
@@ -197,9 +187,9 @@ class _ListWidgetState extends State<ListWidget> {
                               ),
                               Expanded(
                                 child: TextFormField(
-                                  onTap: () {
-                                    setState(() {});
-                                  },
+//                                  onTap: () {
+//                                    setState(() {});
+//                                  },
                                   initialValue: budgetData[widget.id]
                                           [widget.cat]['entry'][item]['value']
                                       .toString(),

@@ -24,7 +24,7 @@ class _BudgetState extends State<Budget> {
     return counter;
   }
 
-  Future<String> getSumData() async {
+  Future<String> _getSumData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String counter = (prefs.getString('sum') ?? jsonEncode(Map()));
     return counter;
@@ -60,8 +60,8 @@ class _BudgetState extends State<Budget> {
       }
       setState(() {});
     });
-    getSumData().then((value) {
-      this.budgetSum = jsonDecode(value);
+    _getSumData().then((value) {
+      this.budgetSum = jsonDecode(value) ?? Map();
       this.budgetSum['individual sum'] =
           this.budgetSum['individual sum'] ?? Map();
 //      print(' areeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee ${this.budgetSum}');
@@ -75,9 +75,12 @@ class _BudgetState extends State<Budget> {
 
   @override
   Widget build(BuildContext context) {
-    for (String i in budgetSum['individual sum'].keys.toList()) {
-      total = total + budgetSum['individual sum'][i];
+    this.budgetSum['individual sum'] =
+        this.budgetSum['individual sum'] ?? Map();
+    for (String i in this.budgetSum['individual sum'].keys.toList()) {
+      total = total + this.budgetSum['individual sum'][i];
     }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0Xffb22020),

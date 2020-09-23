@@ -73,9 +73,8 @@ class _EntryState extends State<Entry> {
           this.budgetData[widget.id.toString()].keys.toList().reversed.toList();
       if (this.category.length != 0) {
         this.i = int.parse(this
-                .category[0]
-                .toString()[this.category.last.toString().length - 1]) +
-            1;
+            .category[0]
+            .toString()[this.category.last.toString().length - 1]);
       }
       print('${this.budgetData}');
       setState(() {});
@@ -102,7 +101,7 @@ class _EntryState extends State<Entry> {
 
       this.budgetSum['individual sum'][widget.id] =
           this.budgetSum['individual sum'][widget.id] ?? 0.0;
-//      print(' areeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee ${this.budgetSum}');
+      print(' areeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee ${this.budgetSum}');
 //      setState(() {});
     });
 //    final Sum sum = Provider.of<Sum>(context);
@@ -163,7 +162,8 @@ class _EntryState extends State<Entry> {
                         width: 10,
                       ),
                       Text(
-                        budgetSum['individual sum'][widget.id].toString(),
+                        budgetSum['individual sum'][widget.id].toString() ??
+                            '0.0',
                         style: TextStyle(
                           fontSize: 36,
                         ),
@@ -286,207 +286,6 @@ class _EntryState extends State<Entry> {
                                         },
                                       ),
                                       ListWidget(widget.id.toString(), item),
-//                                      Padding(
-//                                        padding: const EdgeInsets.all(10.0),
-//                                        child: Column(
-//                                          mainAxisAlignment:
-//                                              MainAxisAlignment.spaceEvenly,
-//                                          children: <Widget>[
-//                                            ListView.builder(
-//                                              shrinkWrap: true,
-//                                              physics: ClampingScrollPhysics(),
-//                                              itemCount: inter_items.length,
-//                                              itemBuilder:
-//                                                  (BuildContext context1,
-//                                                      int inter_index) {
-//                                                final inter_item =
-//                                                    inter_items[inter_index]
-//                                                        .toString();
-//                                                print(
-//                                                    'helllooo ${budgetData[widget.id.toString()][item]['entry'][inter_item]}');
-//                                                // if (budgetData[widget.id.toString()][item] == null) {
-//                                                //   budgetData[widget.id.toString()][item] = Map();
-//                                                // }
-//
-//                                                if (budgetData[widget.id
-//                                                            .toString()][item]
-//                                                        ['entry'][inter_item] ==
-//                                                    null) {
-//                                                  budgetData[widget.id
-//                                                              .toString()][item]
-//                                                          ['entry']
-//                                                      [inter_item] = Map();
-//                                                }
-//
-//                                                if (budgetData[widget.id
-//                                                                .toString()]
-//                                                            [item]['entry']
-//                                                        [inter_item]['title'] ==
-//                                                    null) {
-//                                                  budgetData[widget.id
-//                                                              .toString()][item]
-//                                                          ['entry'][inter_item]
-//                                                      ['title'] = 'Entry $iter';
-//                                                }
-//
-//                                                if (budgetData[widget.id
-//                                                                .toString()]
-//                                                            [item]['entry']
-//                                                        [inter_item]['value'] ==
-//                                                    null) {
-//                                                  budgetData[widget.id
-//                                                              .toString()][item]
-//                                                          ['entry'][inter_item]
-//                                                      ['value'] = 0.0;
-//                                                }
-//
-//                                                _setData(budgetData)
-//                                                    .then((value) {
-//                                                  // setState(() {});
-//                                                  print(value.runtimeType);
-//                                                });
-//
-//                                                return Dismissible(
-//                                                  // Each Dismissible must contain a Key. Keys allow Flutter to
-//                                                  // uniquely identify widgets.
-//                                                  key: UniqueKey(),
-////                      Key(item)
-//                                                  // Provide a function that tells the app
-//                                                  // what to do after an item has been swiped away.
-//                                                  onDismissed: (direction) {
-//                                                    // Remove the item from the data source.
-//
-//                                                    var temp = inter_items[
-//                                                        inter_index];
-//
-//                                                    budgetData[widget.id
-//                                                                .toString()]
-//                                                            [item]['entry']
-//                                                        .remove(
-//                                                            temp.toString());
-//                                                    inter_items.remove(temp);
-//
-//                                                    print(
-//                                                        '$temp, $inter_index');
-//                                                    print(budgetData[widget.id
-//                                                            .toString()][item]
-//                                                        ['entry']);
-//
-//                                                    _setData(budgetData)
-//                                                        .then((value) {
-//                                                      setState(() {});
-//                                                      print(
-//                                                          'hihihihi${value.runtimeType}');
-//                                                    });
-//
-//                                                    // Then show a snackbar.
-//                                                  },
-//                                                  // Show a red background as the item is swiped away.
-////                  background: Container(color: Colors.red),
-//                                                  child: Card(
-//                                                    child: ListTile(
-//                                                      title: Container(
-//                                                        color: Colors.grey,
-//                                                        child: Row(
-//                                                          children: [
-//                                                            Expanded(
-//                                                              child:
-//                                                                  TextFormField(
-//                                                                onTap: () {
-//                                                                  setState(
-//                                                                      () {});
-//                                                                },
-//                                                                initialValue: budgetData[widget
-//                                                                            .id
-//                                                                            .toString()][item]
-//                                                                        [
-//                                                                        'entry']
-//                                                                    [
-//                                                                    inter_item]['title'],
-//                                                                onChanged:
-//                                                                    (val) {
-//                                                                  budgetData[widget
-//                                                                              .id
-//                                                                              .toString()][item]
-//                                                                          [
-//                                                                          'entry'][inter_item]
-//                                                                      [
-//                                                                      'title'] = val;
-//
-////                                            setState(() {});
-//                                                                  _setData(
-//                                                                      budgetData);
-////                                        .then((value) => print(value));
-//                                                                },
-//                                                              ),
-//                                                            ),
-//                                                            Expanded(
-//                                                              child:
-//                                                                  TextFormField(
-//                                                                onTap: () {
-//                                                                  setState(
-//                                                                      () {});
-//                                                                },
-//                                                                initialValue: budgetData[widget
-//                                                                            .id
-//                                                                            .toString()][item]['entry'][inter_item]
-//                                                                        [
-//                                                                        'value']
-//                                                                    .toString(),
-//                                                                onChanged:
-//                                                                    (val) {
-//                                                                  budgetData[widget
-//                                                                              .id
-//                                                                              .toString()][item]
-//                                                                          [
-//                                                                          'entry'][inter_item]['value'] =
-//                                                                      int.parse(
-//                                                                          val);
-//                                                                  budgetSum[
-//                                                                          'individual sum']
-//                                                                      [widget.id
-//                                                                          .toString()] = indiSum(
-//                                                                      budgetData);
-//                                                                  setSumData(
-//                                                                          budgetSum)
-//                                                                      .then((value) =>
-//                                                                          print(
-//                                                                              value));
-////                                            setState(() {});
-//                                                                  _setData(
-//                                                                      budgetData);
-////                                        .then((value) => print(value));
-//                                                                },
-//                                                              ),
-//                                                            ),
-//                                                          ],
-//                                                        ),
-//                                                      ),
-//                                                    ),
-//                                                  ),
-//                                                );
-//                                              },
-//                                            ),
-//                                          ],
-//                                        ),
-//                                      ),
-//                                      Row(
-//                                        mainAxisAlignment:
-//                                            MainAxisAlignment.end,
-//                                        children: [
-//                                          RaisedButton(
-//                                            child: Text('+add item'),
-//                                            onPressed: () {
-//                                              setState(() {
-////                                                print(budgetSum);
-//                                                iter++;
-//                                                inter_items.add('Entry $iter');
-////                                                print(inter_items);
-//                                              });
-//                                            },
-//                                          ),
-//                                        ],
-//                                      ),
                                     ],
                                   ),
                                 ),
